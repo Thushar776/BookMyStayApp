@@ -1,13 +1,13 @@
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * ==============================================================
- * Book My Stay App
- * Use Case 2: Basic Room Types & Static Availability
+ * ABSTRACT CLASS - Room
  * ==============================================================
+ * Represents a generic hotel room
+ * @version 2.1
  */
-
-/* --------------------------------------------------------------
-   ABSTRACT CLASS - Room
---------------------------------------------------------------*/
 abstract class Room {
 
     protected int numberOfBeds;
@@ -27,9 +27,8 @@ abstract class Room {
     }
 }
 
-/* --------------------------------------------------------------
-   CLASS - SingleRoom
---------------------------------------------------------------*/
+/* -------------------------------------------------------------- */
+
 class SingleRoom extends Room {
 
     public SingleRoom() {
@@ -37,9 +36,8 @@ class SingleRoom extends Room {
     }
 }
 
-/* --------------------------------------------------------------
-   CLASS - DoubleRoom
---------------------------------------------------------------*/
+/* -------------------------------------------------------------- */
+
 class DoubleRoom extends Room {
 
     public DoubleRoom() {
@@ -47,9 +45,8 @@ class DoubleRoom extends Room {
     }
 }
 
-/* --------------------------------------------------------------
-   CLASS - SuiteRoom
---------------------------------------------------------------*/
+/* -------------------------------------------------------------- */
+
 class SuiteRoom extends Room {
 
     public SuiteRoom() {
@@ -57,9 +54,40 @@ class SuiteRoom extends Room {
     }
 }
 
-/* --------------------------------------------------------------
+/* ==============================================================
+   CLASS - RoomInventory
+   Use Case 3: Centralized Inventory
+   @version 3.1
+   ============================================================== */
+
+class RoomInventory {
+
+    private Map<String, Integer> roomAvailability;
+
+    public RoomInventory() {
+        roomAvailability = new HashMap<>();
+        initializeInventory();
+    }
+
+    private void initializeInventory() {
+        roomAvailability.put("Single Room", 5);
+        roomAvailability.put("Double Room", 3);
+        roomAvailability.put("Suite Room", 2);
+    }
+
+    public Map<String, Integer> getRoomAvailability() {
+        return roomAvailability;
+    }
+
+    public void updateAvailability(String roomType, int count) {
+        roomAvailability.put(roomType, count);
+    }
+}
+
+/* ==============================================================
    MAIN CLASS
---------------------------------------------------------------*/
+   ============================================================== */
+
 public class BookMyStayApp {
 
     public static void main(String[] args) {
@@ -68,26 +96,27 @@ public class BookMyStayApp {
         Room doubleRoom = new DoubleRoom();
         Room suite = new SuiteRoom();
 
-        int singleAvailable = 5;
-        int doubleAvailable = 3;
-        int suiteAvailable = 2;
+        RoomInventory inventory = new RoomInventory();
 
-        System.out.println("Hotel Room Initialization\n");
+        System.out.println("Hotel Room Inventory Status\n");
 
         System.out.println("Single Room:");
         single.displayRoomDetails();
-        System.out.println("Available: " + singleAvailable);
+        System.out.println("Available Rooms: " +
+                inventory.getRoomAvailability().get("Single Room"));
 
         System.out.println();
 
         System.out.println("Double Room:");
         doubleRoom.displayRoomDetails();
-        System.out.println("Available: " + doubleAvailable);
+        System.out.println("Available Rooms: " +
+                inventory.getRoomAvailability().get("Double Room"));
 
         System.out.println();
 
         System.out.println("Suite Room:");
         suite.displayRoomDetails();
-        System.out.println("Available: " + suiteAvailable);
+        System.out.println("Available Rooms: " +
+                inventory.getRoomAvailability().get("Suite Room"));
     }
 }
